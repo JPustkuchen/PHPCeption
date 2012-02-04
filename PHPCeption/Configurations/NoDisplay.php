@@ -11,7 +11,7 @@ require_once 'PHPCeption/Configurations/Abstract.php';
  * @license PHPCeption by Julian Pustkuchen is licensed under a Creative Commons
  *          Attribution-ShareAlike 3.0 Unported License. See LICENSE.txt
  */
-class PHPCeption_Configurations_LogOnly extends PHPCeption_Configurations_Default
+class PHPCeption_Configurations_NoDisplay extends PHPCeption_Configurations_Default
 {
 
     /**

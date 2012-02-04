@@ -33,7 +33,7 @@ try {
   $a ++;
 
   // Throw exception anywhere within the code...
-  throw new Exception("Dummy Exception 3: NoDisplay (Log+Notify only!)");
+  throw new Exception("Dummy Exception 2: NoDisplay (Log+Notify only!)");
 } catch (Exception $e) {
   // Handle exceptions using PHPCeption.
   require_once 'PHPCeption/PHPCeption.php';
