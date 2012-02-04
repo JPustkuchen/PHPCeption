@@ -15,6 +15,13 @@ class PHPCeption_Extensions_Display extends PHPCeption_Extensions_AbstractExtens
 {
 
     /**
+     * The templates folder path (without trailing slash!)
+     *
+     * @var string
+     */
+    protected $templatesPath = 'PHPCeption/Extensions/Display/templates';
+
+    /**
      * The template name to use for display.
      * (Without suffix!)
      *
@@ -95,7 +102,7 @@ class PHPCeption_Extensions_Display extends PHPCeption_Extensions_AbstractExtens
         ob_start(); // Start output buffering.
                     // Instead of outputting anything, the output is now stored
                     // in a buffer.
-        require $this->templateName;
+        require $this->getTemplatesPath() . '/' . $this->getTemplateName() . $this->getTemplateFileSuffix();
         // There, now the file has been included and php parsed.
         // It isn't output, it goes into the buffer.
         $templateContent = ob_get_clean();
@@ -136,7 +143,7 @@ class PHPCeption_Extensions_Display extends PHPCeption_Extensions_AbstractExtens
         ob_start(); // Start output buffering.
                     // Instead of outputting anything, the output is now stored
                     // in a buffer.
-        require $this->templateNameHtmlPagebody . $this->templateFileSuffix;
+        require $this->getTemplatesPath() . '/' . $this->getTemplateNameHtmlPagebody() . $this->getTemplateFileSuffix();
         // There, now the file has been included and php parsed.
         // It isn't output, it goes into the buffer.
         $templateContent = ob_get_clean();
@@ -198,5 +205,19 @@ class PHPCeption_Extensions_Display extends PHPCeption_Extensions_AbstractExtens
     {
         $this->templateFileSuffix = $templateFileSuffix;
     }
+	/**
+ * @return the $templatesPath
+ */
+  public function getTemplatesPath() {
+    return $this->templatesPath;
+  }
+
+	/**
+ * @param string $templatesPath
+ */
+  public function setTemplatesPath($templatesPath) {
+    $this->templatesPath = $templatesPath;
+  }
+
 
 }

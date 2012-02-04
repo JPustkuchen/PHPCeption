@@ -47,7 +47,7 @@ class PHPCeption_Extensions_Log extends PHPCeption_Extensions_AbstractExtension
      * If several writers shell be used simultaneously,
      * provide them as array!
      *
-     * @var Zend_Log_Writer array<Zend_Log_Writer>
+     * @var Zend_Log_Writer|array<Zend_Log_Writer>
      */
     private $zendLogWriter = null;
 
@@ -92,7 +92,9 @@ class PHPCeption_Extensions_Log extends PHPCeption_Extensions_AbstractExtension
                 $configuration->get(get_class($this),
                         self::KEY_CONFIG_ZENDLOGWRITER));
         }
-        $this->setZendLogger();
+
+        // Set default Zend_Log.
+        $this->setZendLog(new Zend_Log());
     }
 
     /**
@@ -195,8 +197,11 @@ class PHPCeption_Extensions_Log extends PHPCeption_Extensions_AbstractExtension
      *
      * @param $zendLogWriter Zend_Log_Writer
      */
-    public function setZendLogWriter (Zend_Log_Writer $zendLogWriter = null)
+    public function setZendLogWriter ($zendLogWriter = null)
     {
+        if(!is_array($zendLogWriter) && !$zendLogWriter instanceof Zend_Log_Writer){
+            throw new Exception('Zend log writer must be an array or an instance of Zend_Log_Writer!');
+        }
         $this->zendLogWriter = $zendLogWriter;
     }
 

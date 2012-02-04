@@ -43,6 +43,7 @@ class PHPCeption_Configurations_SchemeDefault implements
     protected function __construct ()
     {
         $this->schemeHash = $this->createSchemeHash();
+        require_once 'PHPCeption/Configurations/Default.php';
         $this->fallbackConfiguration = PHPCeption_Configurations_Default::createInstance();
     }
 
@@ -53,7 +54,9 @@ class PHPCeption_Configurations_SchemeDefault implements
      */
     protected function createSchemeHash ()
     {
-        return array($this->getFallbackConfiguration() => Exception);
+        $cDefault = $this->getFallbackConfiguration();
+        return array('Exception' => $cDefault,
+                'InvalidArgumentException' => $cDefault);
     }
 
     /*

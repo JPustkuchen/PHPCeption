@@ -12,6 +12,7 @@
 */
 class PHPCeption_ConfigurationSchemeAnalyzer
 {
+
     /**
      * The configuration scheme to use for analysis.
      *
@@ -19,6 +20,12 @@ class PHPCeption_ConfigurationSchemeAnalyzer
      */
     protected $configurationScheme;
 
+    /**
+     * Returns a new instance.
+     *
+     * @param PHPCeption_Configurations_ConfigurationScheme $configurationScheme
+     * @return PHPCeption_ConfigurationSchemeAnalyzer
+     */
     public static function createInstance (
             PHPCeption_Configurations_ConfigurationScheme $configurationScheme)
     {
@@ -28,7 +35,7 @@ class PHPCeption_ConfigurationSchemeAnalyzer
     protected function __construct (
             PHPCeption_Configurations_ConfigurationScheme $configurationScheme)
     {
-        $this->setScheme($configurationScheme);
+        $this->setConfigurationScheme($configurationScheme);
     }
 
     /**
@@ -40,26 +47,27 @@ class PHPCeption_ConfigurationSchemeAnalyzer
      */
     public function getConfiguration (Exception $e)
     {
-        $configuration = $this->findClass(get_class($e));
-        if(empty($configuration)){
-
+        $exceptionClass = get_class($e);
+        $schemeHash = $this->getConfigurationScheme()->getSchemeHash();
+        if(!empty($schemeHash[$exceptionClass])){
+            return $schemeHash[$exceptionClass];
+        } else {
+            // Look for parent class!
+            $parentClass = get_parent_class($e);
+            if($parentClass !== false){
+                // Parent class exists!
+                // Create dummy exception to use for further parent checks!
+                $parentDummyException = new $parentClass();
+                return $this->getConfiguration($parentDummyException);
+            }
         }
-
-        return $configuration;
+        // Use fallback if no matching configuration could be found.
+        return $this->getConfigurationScheme()->getFallbackConfiguration();
     }
 
     /**
      *
-     * @param unknown_type $exceptionClass
-     * @return PHPCeption_Configuration
-     */
-    protected function findClass($exceptionClass){
-        return $configuration;
-    }
-
-    /**
-     *
-     * @return the $scheme
+     * @return PHPCeption_Configurations_ConfigurationScheme the $scheme
      */
     public function getConfigurationScheme ()
     {

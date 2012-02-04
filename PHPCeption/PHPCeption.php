@@ -8,15 +8,17 @@
  * @copyright Julian Pustkuchen - http://Julian.Pustkuchen.com
  * @license PHPCeption by Julian Pustkuchen is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License. See LICENSE.txt
  */
-class PHPCeption_PHPCeption implements SplSubject
+class PHPCeption_PHPCeption
 {
 
     /**
-     * The configuration settings encapsulated in a flexible object.
+     * The configuration scheme
+     * providing the configuration with
+     * settings encapsulated in a flexible object.
      *
-     * @var PHPCeption_Configuration
+     * @var PHPCeption_Configurations_ConfigurationScheme
      */
-    private $configuration;
+    private $configurationScheme;
 
     /**
      * Keeps multiple handlers and possible other observers
@@ -34,6 +36,25 @@ class PHPCeption_PHPCeption implements SplSubject
      */
     private $currentException;
 
+    /**
+     * Keeps the current configuration to use for
+     * handling the current exception.
+     * Cleared after handle.
+     *
+     * @var Exception
+     */
+    private $currentConfiguration;
+
+    /**
+     * Determines if the expert mode should be used
+     * for the current user.
+     * This option allows for example to show further information,
+     * etc. to the user calling.
+     *
+     * @var bool
+     */
+    private $expertMode = false;
+
     // Configuration hash keys!
     const CONFIG_KEY_EXPERTMODE = 'expert_mode';
 
@@ -42,27 +63,30 @@ class PHPCeption_PHPCeption implements SplSubject
     /**
      * Creates a new PHPCeption instance.
      *
-     * @param $configuration PHPCeption_Configuration
+     * @param
+     *            configurationSchemen PHPCeption_Configuration
      * @return PHPCeption_PHPCeption
      */
     public static function createInstance (
-            PHPCeption_Configuration $configuration = null)
+            PHPCeption_Configurations_ConfigurationScheme $configurationScheme = null)
     {
-        return new self($configuration);
+        return new self($configurationScheme);
     }
 
     /**
      *
-     * @param $configuration PHPCeption_Configuration
+     * @param $configurationScheme PHPCeption_Configurations_ConfigurationScheme
      */
     protected function __construct (
-            PHPCeption_Configuration $configuration = null)
+            PHPCeption_Configurations_ConfigurationScheme $configurationScheme = null)
     {
-        if ($configuration === null) {
-            require_once 'Configurations/Default.php';
-            $configuration = PHPCeption_Configurations_Default::createInstance();
+        // Set default configuration scheme
+        if ($configurationScheme === null) {
+            // None given, use default!
+            require_once 'PHPCeption/Configurations/SchemeDefault.php';
+            $configurationScheme = PHPCeption_Configurations_SchemeDefault::createInstance();
         }
-        $this->configuration = $configuration;
+        $this->setConfigurationScheme($configurationScheme);
     }
 
     /**
@@ -72,34 +96,71 @@ class PHPCeption_PHPCeption implements SplSubject
      *
      * @param $e Exception
      *            The Exception to handle.
-     * @param $tmpSpecialConfiguration PHPCeption_Configuration
+     * @param $configurationOverride PHPCeption_Configuration
      */
     public function handle (Exception $e,
-            PHPCeption_Configuration $tmpSpecialConfiguration = null)
+            PHPCeption_Configuration $configurationOverride = null)
     {
+        $tmpExpertMode = $this->getExpertMode();
+        $tmpObservers = $this->getObservers();
+
         // Set current exception for access by observers.
         $this->setCurrentException($e);
 
-        // Keep main configuration
-        $tmpMainConfiguration = $this->getConfiguration();
-        if ($tmpSpecialConfiguration !== null) {
-            // If temporary special configuration provided, set it temporarily.
-            $this->setConfiguration($tmpSpecialConfiguration);
+        // Set the current configuration for handling the exception.
+        if ($configurationOverride === null) {
+            require_once 'PHPCeption/ConfigurationSchemeAnalyzer.php';
+            $configurationSchemeAnalyzer = PHPCeption_ConfigurationSchemeAnalyzer::createInstance(
+                    $this->getConfigurationScheme());
+            $this->setCurrentConfiguration(
+                    $configurationSchemeAnalyzer->getConfiguration(
+                            $this->getCurrentException()));
         }
+
+        // Attach Configuration
+        // Set expert mode.
+        if($this->getConfiguration()->has(get_class($this), self::CONFIG_KEY_EXPERTMODE))
+        {
+          $this->setExpertMode($this->getConfiguration()->get(get_class($this), self::CONFIG_KEY_EXPERTMODE));
+        }
+
+        // Autoregister handlers by configuration.
+        if($this->getConfiguration()->has(get_class($this), self::CONFIG_KEY_AUTOREGISTER_HANDLERS))
+        {
+          $autoregisterHandlers = $this->getConfiguration()->get(get_class($this), self::CONFIG_KEY_AUTOREGISTER_HANDLERS);
+          if(!empty($autoregisterHandlers)){
+            foreach ($autoregisterHandlers as $handler) {
+              /* @var $handler PHPCeption_Handler */
+              $this->attach($handler);
+            }
+          }
+        }
+
         // Notify all observers / handlers.
         $this->notify();
 
-        // Reset main configuration.
-        $this->setConfiguration($tmpMainConfiguration);
-
-        // Remove exception when finised.
+        // Remove current exception/configuration when finised.
         $this->setCurrentException(null);
+        $this->setCurrentConfiguration(null);
+        $this->setExpertMode($tmpExpertMode);
+        $this->setObservers($tmpObservers);
+    }
+
+    /**
+     * Returns the configuration to use for
+     * handling the current exception.
+     *
+     * @return PHPCeption_Configuration
+     */
+    public function getConfiguration ()
+    {
+        return $this->getCurrentConfiguration();
     }
 
     /*
      * (non-PHPdoc) @see SplSubject::attach()
      */
-    public function attach (SplObserver $observer)
+    public function attach (PHPCeption_Handler $observer)
     {
         $this->observers[] = $observer;
     }
@@ -107,11 +168,11 @@ class PHPCeption_PHPCeption implements SplSubject
     /*
      * (non-PHPdoc) @see SplSubject::detach()
      */
-    public function detach (SplObserver $observer)
+    public function detach (PHPCeption_Handler $observer)
     {
         foreach ($this->observers as $key => $observer) {
             /*
-             * @var $observers SplObserver
+             * @var $observers PHPCeption_Handler
              */
             if ($observer === $observer) {
                 unset($this->observers[$key]);
@@ -126,7 +187,7 @@ class PHPCeption_PHPCeption implements SplSubject
     {
         foreach ($this->observers as $key => $observer) {
             /*
-             * @var $observer SplObserver
+             * @var $observer PHPCeption_Handler
              */
             $observer->update($this);
         }
@@ -134,11 +195,12 @@ class PHPCeption_PHPCeption implements SplSubject
 
     /**
      *
-     * @return PHPCeption_Configuration the $configuration
+     * @return PHPCeption_Configurations_ConfigurationScheme the
+     *         $configurationScheme
      */
-    public function getConfiguration ()
+    public function getConfigurationScheme ()
     {
-        return $this->configuration;
+        return $this->configurationScheme;
     }
 
     /**
@@ -152,11 +214,12 @@ class PHPCeption_PHPCeption implements SplSubject
 
     /**
      *
-     * @param $configuration PHPCeption_Configuration
+     * @param $configurationScheme PHPCeption_Configurations_ConfigurationScheme
      */
-    public function setConfiguration ($configuration)
+    public function setConfigurationScheme (
+            PHPCeption_Configurations_ConfigurationScheme $configurationScheme)
     {
-        $this->configuration = $configuration;
+        $this->configurationScheme = $configurationScheme;
     }
 
     /**
@@ -170,10 +233,55 @@ class PHPCeption_PHPCeption implements SplSubject
 
     /**
      *
-     * @param $currentException PHPCeption_PHPCeption
+     * @param $currentException Exception
      */
-    private function setCurrentException ($currentException)
+    private function setCurrentException (Exception $currentException = null)
     {
         $this->currentException = $currentException;
     }
+
+    /**
+     *
+     * @return PHPCeption_Configuration the $currentConfiguration
+     */
+    private function getCurrentConfiguration ()
+    {
+        return $this->currentConfiguration;
+    }
+
+    /**
+     *
+     * @param $currentConfiguration PHPCeption_Configuration
+     */
+    private function setCurrentConfiguration (
+            PHPCeption_Configuration $currentConfiguration = null)
+    {
+        $this->currentConfiguration = $currentConfiguration;
+    }
+
+    /**
+     *
+     * @return boolean the $expertMode
+     */
+    public function getExpertMode ()
+    {
+        return $this->expertMode;
+    }
+
+    /**
+     *
+     * @param $expertMode boolean
+     */
+    public function setExpertMode ($expertMode)
+    {
+        $this->expertMode = ! empty($expertMode);
+    }
+	/**
+ * @param multitype: $observers
+ */
+  private function setObservers($observers) {
+    $this->observers = $observers;
+  }
+
+
 }

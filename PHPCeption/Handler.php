@@ -10,8 +10,5 @@
 */
 abstract class PHPCeption_Handler
 {
-    /*
-     * (non-PHPdoc) @see SplObserver::update()
-     */
     public abstract function update (PHPCeption_PHPCeption $subject);
 }

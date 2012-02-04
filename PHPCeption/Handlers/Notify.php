@@ -26,6 +26,7 @@ class PHPCeption_Handlers_Notify extends PHPCeption_Handler
     {
         $e = $subject->getCurrentException();
         $configuration = $subject->getConfiguration();
+        require_once 'PHPCeption/Extensions/Notify.php';
         $extensionNotify = PHPCeption_Extensions_Notify::createInstance($e,
                 $configuration);
         $extensionNotify->sendNotifications();

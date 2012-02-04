@@ -22,11 +22,11 @@ class PHPCeption_PHPCeptionTest extends PHPUnit_Framework_TestCase
     protected function setUp ()
     {
         parent::setUp();
-        
+
         // TODO Auto-generated PHPCeption_PHPCeptionTest::setUp()
-        
+
         $this->PHPCeption_PHPCeption = new PHPCeption_PHPCeption(/* parameters */);
-    
+
     }
 
     /**
@@ -35,9 +35,9 @@ class PHPCeption_PHPCeptionTest extends PHPUnit_Framework_TestCase
     protected function tearDown ()
     {
         // TODO Auto-generated PHPCeption_PHPCeptionTest::tearDown()
-        
+
         $this->PHPCeption_PHPCeption = null;
-        
+
         parent::tearDown();
     }
 
@@ -56,9 +56,9 @@ class PHPCeption_PHPCeptionTest extends PHPUnit_Framework_TestCase
     {
         // TODO Auto-generated PHPCeption_PHPCeptionTest::testCreateInstance()
         $this->markTestIncomplete("createInstance test not implemented");
-        
+
         PHPCeption_PHPCeption::createInstance(/* parameters */);
-    
+
     }
 
     /**
@@ -68,9 +68,9 @@ class PHPCeption_PHPCeptionTest extends PHPUnit_Framework_TestCase
     {
         // TODO Auto-generated PHPCeption_PHPCeptionTest->testHandle()
         $this->markTestIncomplete("handle test not implemented");
-        
+
         $this->PHPCeption_PHPCeption->handle(/* parameters */);
-    
+
     }
 
     /**
@@ -80,9 +80,9 @@ class PHPCeption_PHPCeptionTest extends PHPUnit_Framework_TestCase
     {
         // TODO Auto-generated PHPCeption_PHPCeptionTest->testAttach()
         $this->markTestIncomplete("attach test not implemented");
-        
+
         $this->PHPCeption_PHPCeption->attach(/* parameters */);
-    
+
     }
 
     /**
@@ -92,9 +92,9 @@ class PHPCeption_PHPCeptionTest extends PHPUnit_Framework_TestCase
     {
         // TODO Auto-generated PHPCeption_PHPCeptionTest->testDetach()
         $this->markTestIncomplete("detach test not implemented");
-        
+
         $this->PHPCeption_PHPCeption->detach(/* parameters */);
-    
+
     }
 
     /**
@@ -104,9 +104,9 @@ class PHPCeption_PHPCeptionTest extends PHPUnit_Framework_TestCase
     {
         // TODO Auto-generated PHPCeption_PHPCeptionTest->testNotify()
         $this->markTestIncomplete("notify test not implemented");
-        
+
         $this->PHPCeption_PHPCeption->notify(/* parameters */);
-    
+
     }
 
     /**
@@ -116,9 +116,9 @@ class PHPCeption_PHPCeptionTest extends PHPUnit_Framework_TestCase
     {
         // TODO Auto-generated PHPCeption_PHPCeptionTest->testGetConfiguration()
         $this->markTestIncomplete("getConfiguration test not implemented");
-        
-        $this->PHPCeption_PHPCeption->getConfiguration(/* parameters */);
-    
+
+        $this->PHPCeption_PHPCeption->getConfigurationScheme(/* parameters */);
+
     }
 
     /**
@@ -128,9 +128,9 @@ class PHPCeption_PHPCeptionTest extends PHPUnit_Framework_TestCase
     {
         // TODO Auto-generated PHPCeption_PHPCeptionTest->testGetObservers()
         $this->markTestIncomplete("getObservers test not implemented");
-        
+
         $this->PHPCeption_PHPCeption->getObservers(/* parameters */);
-    
+
     }
 
     /**
@@ -140,9 +140,9 @@ class PHPCeption_PHPCeptionTest extends PHPUnit_Framework_TestCase
     {
         // TODO Auto-generated PHPCeption_PHPCeptionTest->testSetConfiguration()
         $this->markTestIncomplete("setConfiguration test not implemented");
-        
-        $this->PHPCeption_PHPCeption->setConfiguration(/* parameters */);
-    
+
+        $this->PHPCeption_PHPCeption->setConfigurationScheme(/* parameters */);
+
     }
 
     /**
@@ -153,9 +153,9 @@ class PHPCeption_PHPCeptionTest extends PHPUnit_Framework_TestCase
         // TODO Auto-generated
         // PHPCeption_PHPCeptionTest->testGetCurrentException()
         $this->markTestIncomplete("getCurrentException test not implemented");
-        
+
         $this->PHPCeption_PHPCeption->getCurrentException(/* parameters */);
-    
+
     }
 
 }
