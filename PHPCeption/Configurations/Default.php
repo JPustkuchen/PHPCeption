@@ -78,18 +78,20 @@ class PHPCeption_Configurations_Default extends PHPCeption_Configurations_Abstra
 
     protected function setDefaultsNotify ()
     {
-        /*
-         * -- Delete this line and replace the following values to use email
-         * notifications! // Set email notification requirements (read API
-         * documentation for details). $notifyMethodMail =
-         * PHPCeption_Extensions_Notify_Mail::createInstance();
-         * $notifyMethodMail->setFromAlias('Example Exception');
-         * $notifyMethodMail->setFromEmail('no-reply@example.com');
-         * $notifyMethodMail->setRecipients(array('Mr./Mrs. Example' =>
-         * 'info@example.com')); $notifyMethodMail->setRecipientsBCC(array());
-         * $this->set('PHPCeption_Handlers_Notify',
-         * PHPCeption_Handlers_Notify::KEY_CONFIG_NOTIFY_METHODS,
-         * array($notifyMethodMail)); //
-         */
+        // -- Delete this line and replace the following values to use email
+        // notifications!
+        // Set email notification requirements (read API documentation for
+        // details).
+        require_once 'PHPCeption/Extensions/Notify/Mail.php';
+        $notifyMethodMail = PHPCeption_Extensions_Notify_Mail::createInstance();
+        $notifyMethodMail->setFromAlias('Example Exception');
+        $notifyMethodMail->setFromEmail('no-reply@example.com');
+        $notifyMethodMail->setRecipients(
+                array('Mr./Mrs. Example' => 'info@example.com'));
+        $notifyMethodMail->setRecipientsBCC(array());
+        require_once 'PHPCeption/Extensions/Notify.php';
+        $this->set('PHPCeption_Handlers_Notify',
+                PHPCeption_Extensions_Notify::KEY_CONFIG_NOTIFY_METHODS,
+                array($notifyMethodMail));
     }
 }

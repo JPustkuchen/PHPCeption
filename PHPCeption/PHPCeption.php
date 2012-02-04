@@ -115,6 +115,8 @@ class PHPCeption_PHPCeption
             $this->setCurrentConfiguration(
                     $configurationSchemeAnalyzer->getConfiguration(
                             $this->getCurrentException()));
+        } else {
+            $this->setCurrentConfiguration($configurationOverride);
         }
 
         // Attach Configuration

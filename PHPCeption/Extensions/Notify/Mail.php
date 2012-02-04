@@ -1,5 +1,7 @@
 <?php
 
+require_once 'PHPCeption/Extensions/Notify/Method.php';
+
 /**
  * Implements the notification by mail method.
  * Registered recipients receive an email if an exception is handled.
@@ -116,6 +118,7 @@ class PHPCeption_Extensions_Notify_Mail implements
     protected function __construct (Zend_Mail $zendMail = null)
     {
         if ($zendMail === null) {
+            require_once 'Zend/Mail.php';
             $zendMail = new Zend_Mail();
         }
         $this->setZendMail($zendMail);
