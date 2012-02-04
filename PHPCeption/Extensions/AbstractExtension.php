@@ -1,12 +1,12 @@
 <?php
 
 /**
+ * Contains the basic functionality for a flexible PHPCeption extension.
  *
  * @author Julian Pustkuchen
- *
- *
+ * @copyright Julian Pustkuchen - http://Julian.Pustkuchen.com
+ * @license PHPCeption by Julian Pustkuchen is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License. See LICENSE.txt
  */
-
 abstract class PHPCeption_Extensions_AbstractExtension
 {
 
@@ -33,6 +33,7 @@ abstract class PHPCeption_Extensions_AbstractExtension
     }
 
     /**
+     * Returns the exception to handle.
      *
      * @return Exception the $exception
      */
@@ -42,6 +43,7 @@ abstract class PHPCeption_Extensions_AbstractExtension
     }
 
     /**
+     * Returns the whole configuration used for the components.
      *
      * @return PHPCeption_Configuration the $configuration
      */
@@ -54,7 +56,7 @@ abstract class PHPCeption_Extensions_AbstractExtension
      *
      * @param $exception Exception
      */
-    protected function setException ($exception)
+    protected function setException (Exception $exception)
     {
         $this->exception = $exception;
     }
@@ -63,7 +65,7 @@ abstract class PHPCeption_Extensions_AbstractExtension
      *
      * @param $configuration PHPCeption_Configuration
      */
-    protected function setConfiguration ($configuration)
+    protected function setConfiguration (PHPCeption_Configuration $configuration)
     {
         $this->configuration = $configuration;
     }

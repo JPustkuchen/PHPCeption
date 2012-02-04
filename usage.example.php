@@ -9,7 +9,7 @@ try {
     // Just some stupid code examples
     $a = 1;
     $a ++;
-
+    
     // Throw exception anywhere within the code...
     throw new Exception("Dummy Exception 1");
 } catch (Exception $e) {

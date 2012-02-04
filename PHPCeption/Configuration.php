@@ -2,6 +2,9 @@
 
 /**
 * Represents a PHPCeption Configuration.
+* @author Julian Pustkuchen
+* @copyright Julian Pustkuchen - http://Julian.Pustkuchen.com
+* @license PHPCeption by Julian Pustkuchen is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License. See LICENSE.txt
 */
 interface PHPCeption_Configuration
 {

@@ -6,8 +6,7 @@
  * @author Julian Pustkuchen
  * @since 2012-02-01
  * @copyright Julian Pustkuchen - http://Julian.Pustkuchen.com
- * @license
- *
+ * @license PHPCeption by Julian Pustkuchen is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License. See LICENSE.txt
  */
 class PHPCeption_PHPCeption implements SplSubject
 {
@@ -35,7 +34,10 @@ class PHPCeption_PHPCeption implements SplSubject
      */
     private $currentException;
 
+    // Configuration hash keys!
     const CONFIG_KEY_EXPERTMODE = 'expert_mode';
+
+    const CONFIG_KEY_AUTOREGISTER_HANDLERS = 'autoregister_handlers';
 
     /**
      * Creates a new PHPCeption instance.
