@@ -16,6 +16,7 @@ class PHPCeption_Extensions_Display extends PHPCeption_Extensions_AbstractExtens
 
     /**
      * The template name to use for display.
+     * (Without suffix!)
      *
      * @var string
      */
@@ -23,6 +24,7 @@ class PHPCeption_Extensions_Display extends PHPCeption_Extensions_AbstractExtens
 
     /**
      * The template name to use for the HTML page body.
+     * (Without suffix!)
      *
      * @var string
      */
@@ -34,22 +36,52 @@ class PHPCeption_Extensions_Display extends PHPCeption_Extensions_AbstractExtens
      * @var string
      */
     protected $templateFileSuffix = '.tpl.php';
-    
+
     // Configuration hash keys!
     const KEY_CONFIG_TEMPLATENAME = 'template_name';
+
+    const KEY_CONFIG_TEMPLATENAME_HTML_PAGEBODY = 'template_name_html_pagebody';
+
+    const KEY_CONFIG_TEMPLATEFILESUFFIX = 'template_file_suffix';
 
     /**
      * Returns a new instance.
      *
-     * @param $e Exception           
-     * @param $configuration PHPCeption_Configuration           
+     * @param $e Exception
+     * @param $configuration PHPCeption_Configuration
      *
      * @return PHPCeption_Notify
      */
-    public static function createInstance (Exception $e, 
+    public static function createInstance (Exception $e,
             PHPCeption_Configuration $configuration)
     {
         return new self($e, $configuration);
+    }
+
+    protected function __construct (Exception $exception,
+            PHPCeption_Configuration $configuration)
+    {
+        parent::__construct($exception, $configuration);
+        // Set configuration data if given.
+        if ($configuration->has(get_class($this), self::KEY_CONFIG_TEMPLATENAME)) {
+            $this->setTemplateName(
+                    $configuration->get(get_class($this),
+                            self::KEY_CONFIG_TEMPLATENAME));
+        }
+
+        if ($configuration->has(get_class($this),
+                self::KEY_CONFIG_TEMPLATENAME_HTML_PAGEBODY)) {
+            $this->setTemplateNameHtmlPagebody(
+                    $configuration->get(get_class($this),
+                            self::KEY_CONFIG_TEMPLATENAME_HTML_PAGEBODY));
+        }
+
+        if ($configuration->has(get_class($this),
+                self::KEY_CONFIG_TEMPLATEFILESUFFIX)) {
+            $this->setTemplateFileSuffix(
+                    $configuration->get(get_class($this),
+                            self::KEY_CONFIG_TEMPLATEFILESUFFIX));
+        }
     }
 
     /**
@@ -59,7 +91,7 @@ class PHPCeption_Extensions_Display extends PHPCeption_Extensions_AbstractExtens
     {
         // Set variables
         $e = $this->getException();
-        
+
         ob_start(); // Start output buffering.
                     // Instead of outputting anything, the output is now stored
                     // in a buffer.
@@ -68,7 +100,7 @@ class PHPCeption_Extensions_Display extends PHPCeption_Extensions_AbstractExtens
         // It isn't output, it goes into the buffer.
         $templateContent = ob_get_clean();
         // Now we read everything that has been buffered... And stops buffering.
-        
+
         return $templateContent;
     }
 
@@ -90,17 +122,17 @@ class PHPCeption_Extensions_Display extends PHPCeption_Extensions_AbstractExtens
 
     /**
      * Returns a whole HTML page containing only the displayMessage.
-     * 
+     *
      * @return string
      */
     public function returnPage ()
     {
         // Get Message body.
         $content = $this->returnMessage();
-        
+
         // Set variables
         $e = $this->getException();
-        
+
         ob_start(); // Start output buffering.
                     // Instead of outputting anything, the output is now stored
                     // in a buffer.
@@ -109,7 +141,62 @@ class PHPCeption_Extensions_Display extends PHPCeption_Extensions_AbstractExtens
         // It isn't output, it goes into the buffer.
         $templateContent = ob_get_clean();
         // Now we read everything that has been buffered... And stops buffering.
-        
+
         return $templateContent;
     }
+
+    /**
+     *
+     * @return the $templateName
+     */
+    public function getTemplateName ()
+    {
+        return $this->templateName;
+    }
+
+    /**
+     *
+     * @return the $templateNameHtmlPagebody
+     */
+    public function getTemplateNameHtmlPagebody ()
+    {
+        return $this->templateNameHtmlPagebody;
+    }
+
+    /**
+     *
+     * @return the $templateFileSuffix
+     */
+    public function getTemplateFileSuffix ()
+    {
+        return $this->templateFileSuffix;
+    }
+
+    /**
+     *
+     * @param $templateName string
+     */
+    public function setTemplateName ($templateName)
+    {
+        $this->templateName = $templateName;
+    }
+
+    /**
+     *
+     * @param $templateNameHtmlPagebody string
+     */
+    public function setTemplateNameHtmlPagebody ($templateNameHtmlPagebody)
+    {
+        $this->templateNameHtmlPagebody = $templateNameHtmlPagebody;
+    }
+
+    /**
+     *
+     * @param $templateFileSuffix string
+     */
+    public function setTemplateFileSuffix ($templateFileSuffix)
+    {
+        $this->templateFileSuffix = $templateFileSuffix;
+    }
+
 }

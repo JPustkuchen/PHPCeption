@@ -59,8 +59,8 @@ class PHPCeption_PHPCeption implements SplSubject
             PHPCeption_Configuration $configuration = null)
     {
         if ($configuration === null) {
-            require_once 'PHPCeption/ConfigurationDefault.php';
-            $configuration = PHPCeption_ConfigurationDefault::createInstance();
+            require_once 'Configurations/Default.php';
+            $configuration = PHPCeption_Configurations_Default::createInstance();
         }
         $this->configuration = $configuration;
     }

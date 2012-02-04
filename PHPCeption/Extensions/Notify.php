@@ -37,6 +37,20 @@ class PHPCeption_Extensions_Notify extends PHPCeption_Extensions_AbstractExtensi
         return new self($e, $configuration);
     }
 
+    protected function __construct (Exception $exception,
+            PHPCeption_Configuration $configuration)
+    {
+        parent::__construct($exception, $configuration);
+
+        // Set configuration data if present.
+        if ($configuration->has(get_class($this),
+                self::KEY_CONFIG_NOTIFY_METHODS)) {
+            $this->setNotifyMethods(
+                    $configuration->get(get_class($this),
+                            self::KEY_CONFIG_NOTIFY_METHODS));
+        }
+    }
+
     /**
      * Sends the notifications regarding to
      * the predefined configurations.

@@ -1,21 +1,21 @@
 <?php
 
 /**
- * Handler / Observer for the display extension of PHPCeption.
- * Creates a display extension instance if registered and notified
+ * Handler / Observer for the notification extension of PHPCeption.
+ * Creates a notification extension instance if registered and notified
  * about a handled exception though and triggers the execution.
  *
  * @author Julian Pustkuchen
  * @copyright Julian Pustkuchen - http://Julian.Pustkuchen.com
  * @license PHPCeption by Julian Pustkuchen is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License. See LICENSE.txt
  */
-class PHPCeption_Extensions_DisplayHandler extends PHPCeption_Handler
+class PHPCeption_Handlers_Notify extends PHPCeption_Handler
 {
 
     /**
      * Returns a new instance
      *
-     * @return PHPCeption_Extensions_DisplayHandler
+     * @return PHPCeption_Handlers_Notify
      */
     public static function createInstance ()
     {
@@ -26,8 +26,8 @@ class PHPCeption_Extensions_DisplayHandler extends PHPCeption_Handler
     {
         $e = $subject->getCurrentException();
         $configuration = $subject->getConfiguration();
-        $extensionDisplay = PHPCeption_Extensions_Display::createInstance($e, 
+        $extensionNotify = PHPCeption_Extensions_Notify::createInstance($e,
                 $configuration);
-        $extensionDisplay->displayPage();
+        $extensionNotify->sendNotifications();
     }
 }

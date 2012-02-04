@@ -186,7 +186,12 @@ class PHPCeption_Extensions_Notify_Mail implements
         $recipients = $this->getRecipients();
         $mail = new Zend_Mail();
         // Set from!
-        $mail->setFrom($this->getFromEmail(), $this->getFromAlias());
+        $fromEmail = $this->getFromEmail();
+        if (! empty($fromEmail)) {
+            throw new Exception(
+                    'A from email address must be set to send the notification by mail.');
+        }
+        $mail->setFrom($fromEmail, $this->getFromAlias());
 
         // Add recipients!
         if (empty($recipients)) {
@@ -409,7 +414,7 @@ class PHPCeption_Extensions_Notify_Mail implements
      */
     public function setUseHtml ($useHtml)
     {
-        $this->useHtml = !empty($useHtml);
+        $this->useHtml = ! empty($useHtml);
     }
 
 }

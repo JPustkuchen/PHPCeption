@@ -9,7 +9,7 @@ require_once ('PHPCeption/Configuration.php');
  * @license PHPCeption by Julian Pustkuchen is licensed under a Creative Commons
  *          Attribution-ShareAlike 3.0 Unported License. See LICENSE.txt
  */
-abstract class PHPCeption_ConfigurationAbstract implements 
+abstract class PHPCeption_Configurations_Abstract implements
         PHPCeption_Configuration
 {
 

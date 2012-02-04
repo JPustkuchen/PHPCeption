@@ -2,6 +2,7 @@
 
 /**
  * Contains the basic functionality for a flexible PHPCeption extension.
+ * Shell be extended by concrete extension implementations.
  *
  * @author Julian Pustkuchen
  * @copyright Julian Pustkuchen - http://Julian.Pustkuchen.com

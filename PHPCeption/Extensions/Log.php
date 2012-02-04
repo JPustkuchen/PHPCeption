@@ -50,7 +50,7 @@ class PHPCeption_Extensions_Log extends PHPCeption_Extensions_AbstractExtension
      * @var Zend_Log_Writer array<Zend_Log_Writer>
      */
     private $zendLogWriter = null;
-    
+
     // Configuration hash keys!
     const KEY_CONFIG_LOGTOERRORLOG = 'log_to_errorlog';
 
@@ -61,30 +61,37 @@ class PHPCeption_Extensions_Log extends PHPCeption_Extensions_AbstractExtension
     /**
      * Returns a new instance.
      *
-     * @param $e Exception           
-     * @param $configuration PHPCeption_Configuration           
+     * @param $e Exception
+     * @param $configuration PHPCeption_Configuration
      *
      * @return PHPCeption_Notify
      */
-    public static function createInstance (Exception $e, 
+    public static function createInstance (Exception $e,
             PHPCeption_Configuration $configuration)
     {
         return new self($e, $configuration);
     }
 
-    protected function __construct (Exception $exception, 
+    protected function __construct (Exception $exception,
             PHPCeption_Configuration $configuration)
     {
         parent::__construct($exception, $configuration);
-        $this->setLogToErrorlog(
-                $configuration->get(get_class($this), 
+        // Set configuration data if present.
+        if ($configuration->has(get_class($this), self::KEY_CONFIG_LOGTOERRORLOG)) {
+            $this->setLogToErrorlog(
+                $configuration->get(get_class($this),
                         self::KEY_CONFIG_LOGTOERRORLOG));
-        $this->setLogToZendLog(
-                $configuration->get(get_class($this), 
+        }
+        if ($configuration->has(get_class($this), self::KEY_CONFIG_LOGTOZENDLOG)) {
+            $this->setLogToZendLog(
+                $configuration->get(get_class($this),
                         self::KEY_CONFIG_LOGTOZENDLOG));
-        $this->setZendLogWriter(
-                $configuration->get(get_class($this), 
+        }
+        if ($configuration->has(get_class($this), self::KEY_CONFIG_ZENDLOGWRITER)) {
+           $this->setZendLogWriter(
+                $configuration->get(get_class($this),
                         self::KEY_CONFIG_ZENDLOGWRITER));
+        }
         $this->setZendLogger();
     }
 
@@ -118,7 +125,7 @@ class PHPCeption_Extensions_Log extends PHPCeption_Extensions_AbstractExtension
     /**
      * Logs the exception using Zend_Log (Zend Framework!) to
      * the given Zend_Log_Writer(s) Destination!
-     * 
+     *
      * @throws Exception
      */
     protected function logToZendLog ()
@@ -168,7 +175,7 @@ class PHPCeption_Extensions_Log extends PHPCeption_Extensions_AbstractExtension
 
     /**
      *
-     * @param $logToErrorlog boolean           
+     * @param $logToErrorlog boolean
      */
     public function setLogToErrorlog ($logToErrorlog)
     {
@@ -177,7 +184,7 @@ class PHPCeption_Extensions_Log extends PHPCeption_Extensions_AbstractExtension
 
     /**
      *
-     * @param $logToZendLog boolean           
+     * @param $logToZendLog boolean
      */
     public function setLogToZendLog ($logToZendLog)
     {
@@ -186,7 +193,7 @@ class PHPCeption_Extensions_Log extends PHPCeption_Extensions_AbstractExtension
 
     /**
      *
-     * @param $zendLogWriter Zend_Log_Writer           
+     * @param $zendLogWriter Zend_Log_Writer
      */
     public function setZendLogWriter (Zend_Log_Writer $zendLogWriter = null)
     {
@@ -204,7 +211,7 @@ class PHPCeption_Extensions_Log extends PHPCeption_Extensions_AbstractExtension
 
     /**
      *
-     * @param $zendLogger Zend_Log           
+     * @param $zendLogger Zend_Log
      */
     public function setZendLog (Zend_Log $zendLog = null)
     {

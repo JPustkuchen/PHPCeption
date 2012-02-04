@@ -8,7 +8,7 @@
 * @copyright Julian Pustkuchen - http://Julian.Pustkuchen.com
 * @license PHPCeption by Julian Pustkuchen is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License. See LICENSE.txt
 */
-abstract class PHPCeption_Handler implements SplObserver
+abstract class PHPCeption_Handler
 {
     /*
      * (non-PHPdoc) @see SplObserver::update()

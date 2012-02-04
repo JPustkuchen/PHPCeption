@@ -9,7 +9,7 @@
  * @copyright Julian Pustkuchen - http://Julian.Pustkuchen.com
  * @license PHPCeption by Julian Pustkuchen is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License. See LICENSE.txt
  */
-class PHPCeption_Extensions_LogHandler extends PHPCeption_Handler
+class PHPCeption_Handlers_Log extends PHPCeption_Handler
 {
 
     /**
@@ -22,11 +22,11 @@ class PHPCeption_Extensions_LogHandler extends PHPCeption_Handler
         return new self();
     }
 
-    public function update (SplSubject $subject)
+    public function update (PHPCeption_PHPCeption $subject)
     {
         $e = $subject->getCurrentException();
         $configuration = $subject->getConfiguration();
-        $extensionLog = PHPCeption_Extensions_Log::createInstance($e, 
+        $extensionLog = PHPCeption_Extensions_Log::createInstance($e,
                 $configuration);
         $extensionLog->log();
     }
